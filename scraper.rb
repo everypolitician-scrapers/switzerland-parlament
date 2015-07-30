@@ -93,8 +93,8 @@ end
 terms = json_from('http://ws.parlament.ch/legislativeperiods?format=json')
 
 terms.each do |t|
-  t[:start_date] = t.delete :from
-  t[:end_date] = t.delete :to
+  t[:start_date] = (t.delete :from).slice!(0,10)
+  t[:end_date] = (t.delete :to).slice!(0,10)
   %i(hasMorePages updated code).each { |i| t.delete i }
   t.delete :hasMorePages
   t.delete :updated
