@@ -7,8 +7,6 @@ require 'open-uri'
 require 'colorize'
 require 'json'
 
-require 'pry'
-
 def json_from(url)
   JSON.parse(open(url, "Accept" => "text/json").read, symbolize_names: true)
 end
@@ -41,7 +39,6 @@ end
 
 # Sigh
 def scrape_current(mp, term)
-  binding.pry
   data = { 
     id: mp[:id],
     name: mp[:firstName] + " " + mp[:lastName],
@@ -57,7 +54,6 @@ def scrape_current(mp, term)
     source: mp[:biographyUrl],
   }
   data[:image] &&= data[:image].sub('225x225','original')
-  puts data
   ScraperWiki.save_sqlite([:id, :term], data)
 end
 
