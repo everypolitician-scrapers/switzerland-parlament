@@ -82,7 +82,7 @@ def scrape_person(mp, term)
 
   if mp[:membership][:leavingDate]
     end_date = mp[:membership][:leavingDate].slice(0,10) 
-    data[:start_date] = end_date if end_date < term[:end_date]
+    data[:end_date] = end_date if end_date < term[:end_date]
   end
 
   ScraperWiki.save_sqlite([:id, :term], data)
