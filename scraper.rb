@@ -19,42 +19,18 @@ def gender_from(str)
 end
 
 def scrape_term(t)
-  if t[:id] == 50 
-    base = "http://ws.parlament.ch/councillors/basicdetails?format=json&pageNumber=%d"
-  else
-    base = "http://ws.parlament.ch/councillors/historic?legislativePeriodFromFilter=#{t[:id]}&format=json&pageNumber=%d" 
-  end
+  return if t[:id] == 50  # or if the term start date is in the future
+  base = "http://ws.parlament.ch/councillors/historic?legislativePeriodFromFilter=#{t[:id]}&format=json&pageNumber=%d" 
 
   page = 0
   while page += 1
     url = base % page
     mems = json_from(url)
-
     mems.each do |mem|
-      t[:id] == 50 ?  scrape_current(mem, t) : scrape_person(mem, t)
+      scrape_person(mem, t)
     end
     break unless mems.last[:hasMorePages]
   end
-end
-
-# Sigh
-def scrape_current(mp, term)
-  data = { 
-    id: mp[:id],
-    name: mp[:firstName] + " " + mp[:lastName],
-    sort_name: mp[:lastName] + ", " + mp[:firstName],
-    given_name: mp[:firstName],
-    family_name: mp[:lastName],
-    area: mp[:canton],
-    council: mp[:council],
-    party: mp[:party],
-    faction: mp[:faction],
-    image: mp[:pictureUrl],
-    term: term[:id],
-    source: mp[:biographyUrl],
-  }
-  data[:image] &&= data[:image].sub('225x225','original')
-  ScraperWiki.save_sqlite([:id, :term], data)
 end
 
 def scrape_person(mp, term)
