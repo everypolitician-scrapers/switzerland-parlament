@@ -19,7 +19,7 @@ def gender_from(str)
 end
 
 def scrape_term(t)
-  return if t[:id] == 50  # or if the term start date is in the future
+  return if t[:id] > 50  # or if the term start date is in the future
   base = "http://ws.parlament.ch/councillors/historic?legislativePeriodFromFilter=#{t[:id]}&format=json&pageNumber=%d" 
 
   page = 0
