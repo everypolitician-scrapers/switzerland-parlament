@@ -43,10 +43,13 @@ def scrape_person(mp, term)
     birth_date: mp[:birthDate].slice!(0,10),
     gender: gender_from(mp[:gender]),
     area: mp[:canton][:abbreviation],
+    area_id: mp[:canton][:id],
     council: mp[:council][:abbreviation],
     council_id: mp[:council][:id],
-    party: mp[:faction][:abbreviation],
+    party: mp[:party][:abbreviation],
+    party_id: mp[:party][:id],
     faction: mp[:faction][:abbreviation],
+    faction_id: mp[:faction][:id],
     term: term[:id],
   }
 
