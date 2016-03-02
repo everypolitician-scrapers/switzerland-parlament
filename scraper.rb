@@ -20,7 +20,7 @@ end
 
 def scrape_term(t)
   return if t[:id] > 50  # or if the term start date is in the future
-  base = "http://ws.parlament.ch/councillors/historic?legislativePeriodFromFilter=#{t[:id]}&format=json&pageNumber=%d" 
+  base = "http://ws-old.parlament.ch/councillors/historic?legislativePeriodFromFilter=#{t[:id]}&format=json&pageNumber=%d" 
 
   page = 0
   while page += 1
@@ -68,7 +68,7 @@ end
 
 
 
-terms = json_from('http://ws.parlament.ch/legislativeperiods?format=json')
+terms = json_from('http://ws-old.parlament.ch/legislativeperiods?format=json')
 
 terms.each do |t|
   t[:start_date] = (t.delete :from).slice!(0,10)
