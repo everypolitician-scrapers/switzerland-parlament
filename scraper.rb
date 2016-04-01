@@ -36,6 +36,7 @@ end
 def scrape_person(mp, term)
   data = { 
     id: mp[:id],
+    identifier__parlamentdotch: mp[:id],
     name: mp[:firstName] + " " + mp[:lastName],
     sort_name: mp[:lastName] + ", " + mp[:firstName],
     given_name: mp[:firstName],
@@ -51,6 +52,7 @@ def scrape_person(mp, term)
     faction: mp[:faction][:abbreviation],
     faction_id: mp[:faction][:id],
     term: term[:id],
+    source: "https://www.parlament.ch/en/biografie?CouncillorId=#{mp[:id]}",
   }
 
   if mp[:membership][:entryDate]
