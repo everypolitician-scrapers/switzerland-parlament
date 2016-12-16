@@ -4,7 +4,6 @@
 require 'scraperwiki'
 require 'nokogiri'
 require 'open-uri'
-require 'colorize'
 require 'json'
 
 def json_from(url)
