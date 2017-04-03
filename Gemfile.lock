@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/everypolitician/scraped.git
-  revision: c2e9db21e2922d8d8053bf7fa763228a0373db79
+  revision: 239570b9216c7572cdc741fad8e4ec6073369199
   specs:
-    scraped (0.3.0)
+    scraped (0.6.0)
       field_serializer (>= 0.3.0)
       nokogiri
       require_all
@@ -63,7 +63,7 @@ GEM
       minitest (>= 4.7.5)
       vcr (>= 2.9)
     netrc (0.11.0)
-    nokogiri (1.7.0.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     open-uri-cached (0.0.5)
     parser (2.3.3.1)
@@ -130,4 +130,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
