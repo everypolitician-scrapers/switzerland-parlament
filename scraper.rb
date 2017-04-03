@@ -2,10 +2,38 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-require 'scraperwiki'
+require 'json'
 require 'nokogiri'
 require 'open-uri'
-require 'json'
+require 'pry'
+require 'scraped'
+require 'scraperwiki'
+
+class CantonList < Scraped::JSON
+  field :cantons do
+    json.map { |j| fragment j => Canton }
+  end
+end
+
+class Canton < Scraped::JSON
+  field :id do
+    json[:abbreviation]
+  end
+
+  field :name do
+    json[:name]
+  end
+
+  field :identifier__parlamentdotch do
+    json[:id]
+  end
+end
+
+CANTON_URL = 'http://ws-old.parlament.ch/cantons'
+
+@cantons = CantonList.new(response: Scraped::Request.new(
+  url: CANTON_URL, headers: { 'Accept' => 'text/json' }
+).response).cantons.map { |c| [c.id, c.to_h] }.to_h
 
 def json_from(url)
   JSON.parse(open(url, 'Accept' => 'text/json').read, symbolize_names: true)
@@ -34,6 +62,9 @@ def scrape_term(t)
 end
 
 def scrape_person(mp, term)
+  # This is icky, but it'll do until we rewrite the whole thing using Scraped
+  canton = @cantons[mp[:canton][:abbreviation]] or raise("Unknown canton: #{mp[:canton]}")
+
   data = {
     id:                         mp[:id],
     identifier__parlamentdotch: mp[:id],
@@ -43,8 +74,8 @@ def scrape_person(mp, term)
     family_name:                mp[:lastName],
     birth_date:                 mp[:birthDate].slice!(0, 10),
     gender:                     gender_from(mp[:gender]),
-    area:                       mp[:canton][:abbreviation],
-    area_id:                    mp[:canton][:id],
+    area:                       canton[:name],
+    area_id:                    canton[:id],
     council:                    mp[:council][:abbreviation],
     council_id:                 mp[:council][:id],
     party:                      mp[:party][:abbreviation],
